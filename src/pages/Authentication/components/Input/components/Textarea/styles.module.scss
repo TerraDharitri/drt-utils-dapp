@@ -1,0 +1,78 @@
+.textarea {
+  display: flex;
+  margin-bottom: 0.25rem;
+  position: relative;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex: 1;
+  }
+
+  .field {
+    display: none;
+  }
+
+  .editor {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 0.5rem;
+    background-color: var(--body);
+    border: none;
+    padding: 1rem;
+    line-height: 1.25;
+    resize: none;
+    font-weight: 300;
+    min-height: calc(100% - 2rem);
+    overflow-y: scroll;
+
+    pointer-events: all;
+    outline: none;
+
+    font-size: 16px;
+    font-family:
+      ui-monospace,
+      SFMono-Regular,
+      SF Mono,
+      Consolas,
+      Liberation Mono,
+      Menlo,
+      monospace;
+
+    &::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--link);
+      border-radius: 5px;
+    }
+  }
+
+  .buttons {
+    position: absolute;
+    bottom: 0 !important;
+    display: flex;
+    align-items: center;
+    right: 1rem !important;
+    transform: translateY(-50%);
+
+    .copy {
+      position: absolute;
+      bottom: 45px;
+      right: 0;
+
+      &:hover path {
+        fill: var(--white);
+      }
+    }
+
+    path {
+      fill: var(--text);
+      transition: all 400ms ease;
+    }
+  }
+}
