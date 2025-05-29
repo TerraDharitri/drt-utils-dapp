@@ -1,0 +1,53 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  repository_dispatch:
+    types: deploy
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      - name: Get node version
+        id: node
+        run: |
+          echo "version=$(node -v)" >> $GITHUB_OUTPUT
+      - name: Get node_modules cache
+        uses: actions/cache@v3
+        id: node_modules
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.node.outputs.version }}
+      - name: Setup yarn
+        run: npm install -g yarn
+      - name: Install Dependencies
+        if: steps.node_modules.outputs.cache-hit != 'true'
+        run: yarn install
+      - run: yarn build
+        env:
+          CI: false
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - run: aws s3 sync ./build/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
+      - uses: rtCamp/action-slack-notify@main
+        env:
+          SLACK_ICON_EMOJI: ':hammer_and_wrench:'
+          SLACK_USERNAME: ${{ secrets.AWS_S3_BUCKET }}
+          SLACK_MESSAGE: ${{ secrets.AWS_S3_BUCKET }}
+          SLACK_FOOTER: ''
+          MSG_MINIMAL: true
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

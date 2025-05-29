@@ -1,0 +1,66 @@
+.form {
+  background-color: var(--background);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--background);
+  position: relative;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .subtitle {
+    color: var(--text);
+    font-weight: 300;
+    font-size: 1rem;
+    margin: 0 0 1rem;
+    line-height: 1.5;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+
+    .wrapper {
+      display: flex;
+      align-items: center;
+
+      .generate {
+        border: 1px solid var(--link);
+        color: var(--link);
+        font-size: 0.75rem;
+        padding: 0.5rem 0.875rem;
+        border-radius: 0.25rem;
+        background-color: transparent;
+        outline: none;
+        transition: all 400ms ease;
+        cursor: pointer;
+        margin-left: 1rem;
+
+        &:hover {
+          color: var(--black);
+          background-color: var(--link);
+        }
+      }
+
+      .paste {
+        padding: 0.5rem 0.7rem;
+        cursor: pointer;
+        margin-left: 1rem;
+
+        &:hover path {
+          fill: var(--white);
+        }
+      }
+
+      path {
+        fill: var(--dark);
+        transition: all 400ms ease;
+      }
+    }
+  }
+}
